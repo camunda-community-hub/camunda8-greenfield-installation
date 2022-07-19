@@ -1,0 +1,36 @@
+identity:
+  enabled: false
+zeebe:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512M"
+    limits:
+      cpu: "1000m"
+      memory: "512M"
+  clusterSize: 1
+  partitionCount: 1
+  replicationFactor: 1
+zeebe-gateway:
+  replicas: 1
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512M"
+    limits:
+      cpu: "1000m"
+      memory: "512M"
+  logLevel: ERROR
+elasticsearch:
+  enabled: true
+  replicas: 1
+  minimumMasterNodes: 1
+  # Allow no backup for single node setups
+  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+  # Request smaller persistent volumes.
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    storageClassName: "ssd"
+    resources:
+      requests:
+        storage: 15Gi

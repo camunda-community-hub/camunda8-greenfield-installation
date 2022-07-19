@@ -109,40 +109,22 @@ TODO: need to document steps to create k8s cluster on Google Cloud
 
 # Installing Camunda Environment
 
-TODO: need to finish documenting this section
+At this point, you have a Kubernetes Cluster on a cloud provider of your choice. The next step is to start up a camunda
+environment. 
 
-At this point, you have a Kubernetes Cluster on a cloud provider of your choice. Follow the steps below to start a 
-Camunda environment. 
+If you're impatient and just want to get a small, but complete, Camunda environment up and running, run the following: 
 
-Place a new bpmn file into the `models` directory. For example, see `camunda-benchmark/gcp/camunda/process-8-service-tasks.bpmn`.
+     make camunda
 
-Change directory to the `camunda-benchmark/gcp/camunda` directory.
+By default, this command will use the values found inside `common/camunda/zeebe-small-profile.yaml`.
 
-Run `make deploy-models`
-
-If things go wrong you can delete the pods and jobs from kubernetes
-
-Run `make clean-deploy-models`
-
-# Running Benchmark
-
-TODO: need to finish documenting this section
-
-Change directory to the `camunda-benchmark/gcp/camunda` directory.
-
-Run `make benchmark`
-
-If things go wrong you can delete the pods and jobs from kubernetes
-
-Run `make clean-benchmark`
+## Customizing your environment. 
 
 # Cleaning Up
 
-TODO: need to finish documenting this section
+Unless this is a production environment, remember to clean things up! These can cost quite a lot of money if you leave them running. 
 
-You will need to clean up the environments. These can cost quite a lot of money if you leave them running
-
-Run `make clean` in the camunda directory to completely delete the deployments and other kube resources.
+Run `make clean` to completely delete all kubernetes objects as well as the cluster.
 
 
 

@@ -4,11 +4,15 @@ k8s: kube
 .PHONY: kube
 kube:
 	az group create --name $(RESOURCE_GROUP) --location $(REGION)
-	az aks create -g $(RESOURCE_GROUP) \
-      --node-resource-group $(NODE_RESOURCE_GROUP) \
-     -n $(CLUSTER_NAME) \
-     --enable-cluster-autoscaler --min-count 1 --max-count 256 \
-     --node-vm-size $(MACHINE_TYPE)
+	az aks create \
+      --resource-group $(RESOURCE_GROUP) \
+      --name $(CLUSTER_NAME) \
+      --node-vm-size $(MACHINE_TYPE) \
+      --node-count 1 \
+      --vm-set-type VirtualMachineScaleSets \
+      --enable-cluster-autoscaler \
+      --min-count $(MIN_NODE_COUNT) \
+      --max-count $(MAX_NODE_COUNT)
 	kubectl config unset clusters.$(CLUSTER_NAME)
 	kubectl config unset users.clusterUser_$(RESOURCE_GROUP)_$(CLUSTER_NAME)
 	az aks get-credentials --resource-group $(RESOURCE_GROUP) --name $(CLUSTER_NAME)

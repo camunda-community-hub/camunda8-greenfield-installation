@@ -9,7 +9,7 @@ MIN_NODE_COUNT ?= 1
 MAX_NODE_COUNT ?= 256
 
 CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/zeebe-small-no-auth-profile.yaml"
+CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/zeebe-small-profile.yaml"
 CAMUNDA_MODEL_FILE = "$(COMMON_DIR)/camunda/EightTasks.bpmn"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform

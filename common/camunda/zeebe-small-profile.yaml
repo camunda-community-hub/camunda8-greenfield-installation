@@ -1,16 +1,32 @@
+global:
+  identity:
+    auth:
+      # Disable the Identity authentication
+      # it will fall back to basic-auth: demo/demo as default user
+      enabled: false
+
+identity:
+  enabled: false
+
+operate:
+  enabled: true
+
+tasklist:
+  enabled: true
+
+optimize:
+  enabled: false
+
+prometheusServiceMonitor:
+  enabled: false
+
 zeebe:
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "512M"
-    limits:
-      cpu: "1000m"
-      memory: "512M"
   clusterSize: 1
   partitionCount: 1
   replicationFactor: 1
-zeebe-gateway:
-  replicas: 1
+
+  pvcSize: 5Gi
+
   resources:
     requests:
       cpu: "100m"
@@ -18,14 +34,36 @@ zeebe-gateway:
     limits:
       cpu: "1000m"
       memory: "512M"
+
+zeebe-gateway:
+  replicas: 1
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512M"
+    limits:
+      cpu: "1000m"
+      memory: "512M"
+
   logLevel: ERROR
+
 elasticsearch:
   enabled: true
+  imageTag: 7.17.3
   replicas: 1
   minimumMasterNodes: 1
   # Allow no backup for single node setups
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
-  # Request smaller persistent volumes.
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512M"
+    limits:
+      cpu: "1000m"
+      memory: "512M"
+
   volumeClaimTemplate:
     accessModes: [ "ReadWriteOnce" ]
     storageClassName: "ssd"

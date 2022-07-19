@@ -37,30 +37,25 @@ The next step is to create a Kubernetes Cluster on the provider of your choice.
 
 ## Microsoft Azure
 
-1. If you haven't already, make sure to install the `az` cli tool as described here:
+1. Verify that the `az` cli tool is installed (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
-https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+       $ az version
+       {
+        "azure-cli": "2.38.0",
+        "azure-cli-core": "2.38.0",
+        "azure-cli-telemetry": "1.0.6",
+        "extensions": {}
+       }
 
-After installing and configuring the Azure command line tool (`az`), you should be able to run the following command
-and see output similar to the following:
+2. The next step is to make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
+   Azure Account. Then, run the following command and then follow the instructions to authenticate via your browser.
 
-     $ az version
-     {
-       "azure-cli": "2.38.0",
-       "azure-cli-core": "2.38.0",
-       "azure-cli-telemetry": "1.0.6",
-       "extensions": {}
-     }
-
-2. The next step is to make sure you are authenticated. Run the following and then follow the instructions to authenticate
-via your browser.
-
-     $ az login
+       $ az login
 
 > :information_source: **Tip** If you're using SSO, first, open a browser and sign in to your Azure/Microsoft account.
 > Then try doing the `az login` command again.
 
-3. Use the Azure-specific make file to create the cluster
+3. Use the Azure-specific `Makefile` to create the cluster
 
 `cd` into the `azure` directory
 
@@ -74,9 +69,11 @@ Update the following bash variables so they are appropriate for your specific en
 
 Run `make` to create an Azure Kubernetes cluster
 
-## Google Compute Engine
+4. Run `make use-k8s` to make sure that your local `kubectl` environment is configured to connect to the new cluster.
 
-TODO: This section is in progress! Need to finish documenting steps to create k8s cluster on Google Cloud
+5. Run `make urls` to see which url to use in order to manage your Azure Kubernetes cluster
+
+## Google Compute Engine
 
 1. Verify `gcloud` is installed (https://cloud.google.com/sdk/docs/install-sdk)
 
@@ -84,16 +81,28 @@ TODO: This section is in progress! Need to finish documenting steps to create k8
        # Google also requires the following plugin as of 2022
        gcloud components install gke-gcloud-auth-plugin
 
-2. Change directory to the `camunda-benchmark/gcp/k8s` directory.
+2. The next step is to make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
+   Google Cloud Account. Then, run the following command and then follow the instructions to authenticate via your browser.
 
-3. Run `make` create a new kubernetes cluster.
+       $ gcloud auth login
 
-4. Run `make use-k8s` to make sure that your local `glcoud` environment is configured to connect to the new cluster.
+3. Use the Google-specific `Makefile` to create a GKE cluster
 
-5. Run `make url-grafana` to output the url to grafana user interface.
+`cd` into the `azure` directory
 
-> :information_source: **Tip** Read the `Makefile` as well as `camunda-benchmark/include/kubernetes-gke.mk` 
-> to see complete list of commands
+Edit the `./google/Makefile` and set the following bash variables so that they are appropriate for your specific environment.
+
+     resource-group ?= <RESOURCE GROUP>
+     node-resource-group ?= <NODE RESOURCE GROUP>
+     clustername ?= <CLUSTER NAME>
+     region ?= <REGION>
+     machine-type ?= <MACHINE TYPE>
+
+Run `make` to create an Google Kubernetes cluster
+
+4. Run `make use-k8s` to make sure that your local `kubectl` environment is configured to connect to the new cluster.
+
+5. Run `make urls` to see which url to use in order to manage your GKE cluster
 
 ## Amazon Web Services
 

@@ -17,19 +17,9 @@ Complete the following steps regardless of which cloud provider you use.
 
        helm version
 
-3. Clone the following 2 repositories into the same parent directory. For example, create a directory named `camunda`, 
-   and `cd` into it. 
-   
-   - Clone this [Camunda 8 Greenfield Installation git repository](https://github.com/camunda-community-hub/camunda8-greenfield-installation)
-   - Also clone the [Zeebe Helm Profiles git repository](https://github.com/camunda-community-hub/zeebe-helm-profiles)
+3. Clone this [Camunda 8 Greenfield Installation git repository](https://github.com/camunda-community-hub/camunda8-greenfield-installation)
 
-At this point, you should have the following directory structure:
-
-     camunda
-      |
-      +-- camunda8-greenfield
-      |
-      +-- zeebe-helm-profiles
+At this point, you should have a local directory named `camunda8-greenfield-installation`
 
 The next step is to create a Kubernetes Cluster on the provider of your choice.
 
@@ -47,7 +37,7 @@ The next step is to create a Kubernetes Cluster on the provider of your choice.
         "extensions": {}
        }
 
-2. The next step is to make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
+2. Make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
    Azure Account. Then, run the following command and then follow the instructions to authenticate via your browser.
 
        $ az login
@@ -81,14 +71,14 @@ Run `make k8s` to create an Azure Kubernetes cluster
        # Google also requires the following plugin as of 2022
        gcloud components install gke-gcloud-auth-plugin
 
-2. The next step is to make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
+2. Make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
    Google Cloud Account. Then, run the following command and then follow the instructions to authenticate via your browser.
 
        $ gcloud auth login
 
 3. Use the Google-specific `Makefile` to create a GKE cluster
 
-`cd` into the `azure` directory
+`cd` into the `google` directory
 
 Edit the `./google/Makefile` and set the following bash variables so that they are appropriate for your specific environment.
 
@@ -112,11 +102,16 @@ TODO: need to document steps to create k8s cluster on Google Cloud
 At this point, you have a Kubernetes Cluster on a cloud provider of your choice. The next step is to start up a camunda
 environment. 
 
-If you're impatient and just want to get a small, but complete, Camunda environment up and running, run the following: 
+To start a small development Camunda environment, run the following: 
 
      make camunda
 
-By default, this command will use the values found inside `common/camunda/zeebe-small-profile.yaml`.
+By default, this command will use the values found inside `common/camunda/zeebe-small-no-auth-profile.yaml`.
+
+There are several other example values files inside `common/camunda` for example, `zeebe-small-profile.yaml` is the same
+as `zeebe-small-no-auth-profile.yaml`, except that it also installs Camunda Identity. 
+
+To customize the Camunda environment by creating your own "values.yaml" file. 
 
 ## Customizing your environment. 
 

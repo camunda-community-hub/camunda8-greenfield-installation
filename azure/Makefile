@@ -1,10 +1,10 @@
-resource-group ?= dave-group
-node-resource-group ?= dave-node-group
-clustername ?= dave-cluster-01
-region ?= eastus2
-machine-type ?= Standard_B2s
+RESOURCE_GROUP ?= camunda-group
+NODE_RESOURCE_GROUP ?= camunda-node-group
+CLUSTER_NAME ?= camunda-cluster-01
+REGION ?= eastus2
+MACHINE_TYPE ?= Standard_B2s
 
-common-dir ?= ../common
+COMMON_DIR ?= ../common
 
 # TODO: I'd rather not have to call a shell script, but I can't get this to work any other way?
 SUBSCRIPTION_ID ?= $(shell "./azure.sh")
@@ -16,4 +16,4 @@ all: k8s
 clean: clean-k8s
 
 include ./kubernetes-azure.mk
-include $(common-dir)/metrics.mk
+include $(COMMON_DIR)/metrics/metrics.mk

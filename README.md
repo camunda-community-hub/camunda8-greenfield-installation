@@ -3,7 +3,7 @@
 
 # Camunda 8 Greenfield Installation
 
-This project contains Makefiles that help to quickly create a Camunda 8 self-managed Kubernetes environment
+This project contains Makefiles that help to quickly create a Camunda 8 self-managed Kubernetes environment.
 
 # Prerequisites
 
@@ -67,7 +67,7 @@ Update the following bash variables so they are appropriate for your specific en
      region ?= <REGION>
      machine-type ?= <MACHINE TYPE>
 
-Run `make` to create an Azure Kubernetes cluster
+Run `make k8s` to create an Azure Kubernetes cluster
 
 4. Run `make use-k8s` to make sure that your local `kubectl` environment is configured to connect to the new cluster.
 
@@ -92,13 +92,12 @@ Run `make` to create an Azure Kubernetes cluster
 
 Edit the `./google/Makefile` and set the following bash variables so that they are appropriate for your specific environment.
 
-     resource-group ?= <RESOURCE GROUP>
-     node-resource-group ?= <NODE RESOURCE GROUP>
-     clustername ?= <CLUSTER NAME>
-     region ?= <REGION>
-     machine-type ?= <MACHINE TYPE>
+     PROJECT ?= <YOUR PROJECT>
+     CLUSTER_NAME ?= <NAME OF CLUSTER>
+     REGION ?= us-east1-b
+     MACHINE_TYPE ?= n1-standard-16
 
-Run `make` to create an Google Kubernetes cluster
+Run `make k8s` to create an Google Kubernetes cluster
 
 4. Run `make use-k8s` to make sure that your local `kubectl` environment is configured to connect to the new cluster.
 

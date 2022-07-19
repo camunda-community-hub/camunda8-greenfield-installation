@@ -1,8 +1,9 @@
-project ?= <CHANGE_ME> #camunda-researchanddevelopment
-clustername ?= camunda-cluster-01
-region ?= us-east1-b
-machine-type ?= n1-standard-16
-common-dir ?= ../common
+PROJECT ?= <CHANGE_ME> #camunda-researchanddevelopment
+CLUSTER_NAME ?= camunda-cluster-01
+REGION ?= us-east1-b
+MACHINE_TYPE ?= n1-standard-16
+
+COMMON_DIR ?= ../common
 
 .PHONY: all
 all: k8s urls
@@ -11,4 +12,4 @@ all: k8s urls
 clean: clean-k8s
 
 include ./include/kubernetes-gke.mk
-include $(common-dir)/metrics/metrics.mk
+include $(COMMON_DIR)/metrics/metrics.mk

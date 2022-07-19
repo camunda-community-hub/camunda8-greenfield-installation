@@ -9,8 +9,14 @@ COMMON_DIR ?= ../common
 # TODO: I'd rather not have to call a shell script, but I can't get this to work any other way?
 SUBSCRIPTION_ID ?= $(shell "./azure.sh")
 
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help:
+	@echo "Run 'make k8s' to create a new cluster. See README.md for more."
+
 .PHONY: all
-all: k8s
+all: k8s urls
 
 .PHONY: clean
 clean: clean-k8s

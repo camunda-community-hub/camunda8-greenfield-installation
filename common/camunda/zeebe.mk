@@ -33,10 +33,6 @@ clean-zeebe:
 	-kubectl delete -n $(CAMUNDA_NAMESPACE) pvc -l app=elasticsearch-master
 	-kubectl delete namespace $(CAMUNDA_NAMESPACE)
 
-.PHONY: logs
-logs:
-	kubectl logs -f -n $(CAMUNDA_NAMESPACE) -l app.kubernetes.io/name=zeebe
-
 .PHONY: watch
 watch:
 	kubectl get pods -w -n $(CAMUNDA_NAMESPACE)
@@ -68,3 +64,15 @@ port-tasklist:
 .PHONY: port-optimize
 port-optimize:
 	kubectl port-forward svc/camunda-optimize 8083:80 -n $(CAMUNDA_NAMESPACE)
+
+.PHONY: bash
+bash:
+	kubectl exec --namespace $(CAMUNDA_NAMESPACE) --stdin --tty $(pod) -- /bin/bash
+
+.PHONY: pods
+pods:
+	kubectl get pods --namespace $(CAMUNDA_NAMESPACE)
+
+.PHONY: logs
+logs:
+	kubectl logs --namespace $(CAMUNDA_NAMESPACE) -f $(pod)

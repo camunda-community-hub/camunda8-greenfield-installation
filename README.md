@@ -97,6 +97,22 @@ Run `make k8s` to create an Google Kubernetes cluster
 
 TODO: need to document steps to create k8s cluster on Google Cloud
 
+## Kind (local developement environment)
+
+It's possible to use `kind` to experiment with kubernetes on your local developer laptop, but please keep in mind that 
+Kubernetes is not really intended to be run on a single machine. That being said, this can be handy for learning and 
+experimenting with Kubernetes. 
+
+1. Make sure to install Docker Desktop (https://www.docker.com/products/docker-desktop/)
+
+2. Make sure that `kind` is installed (https://kind.sigs.k8s.io/)
+
+3. Use `Makefile` inside the `kind` directory to create a k8s cluster. Again, keep in mind that this is a weird, emulated
+   kubernetes cluster. 
+
+       cd kind
+       make k8s
+
 # Installing Camunda Environment
 
 At this point, you have a Kubernetes Cluster on a cloud provider of your choice. The next step is to start up a camunda

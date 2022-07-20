@@ -25,15 +25,15 @@ zeebe:
   partitionCount: 1
   replicationFactor: 1
 
-  pvcSize: 5Gi
+  pvcSize: 1Gi
 
   resources:
     requests:
       cpu: "100m"
       memory: "512M"
     limits:
-      cpu: "1000m"
-      memory: "512M"
+      cpu: "512m"
+      memory: "2Gi"
 
 zeebe-gateway:
   replicas: 1
@@ -44,7 +44,7 @@ zeebe-gateway:
       memory: "512M"
     limits:
       cpu: "1000m"
-      memory: "512M"
+      memory: "1Gi"
 
   logLevel: ERROR
 
@@ -62,11 +62,11 @@ elasticsearch:
       memory: "512M"
     limits:
       cpu: "1000m"
-      memory: "512M"
+      memory: "2Gi"
 
   volumeClaimTemplate:
     accessModes: [ "ReadWriteOnce" ]
-    storageClassName: "ssd"
+    storageClassName: "standard"
     resources:
       requests:
         storage: 15Gi

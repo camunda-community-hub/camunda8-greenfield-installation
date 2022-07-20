@@ -1,9 +1,14 @@
+COMMON_DIR ?= ../common
+
 PROJECT ?= <CHANGE_ME> #camunda-researchanddevelopment
 CLUSTER_NAME ?= camunda-cluster-01
 REGION ?= us-east1-b
 MACHINE_TYPE ?= n1-standard-16
 
-COMMON_DIR ?= ../common
+CAMUNDA_NAMESPACE ?= camunda
+CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"
+CAMUNDA_RELEASE ?= camunda
+CAMUNDA_CHART ?= camunda/camunda-platform
 
 .DEFAULT_GOAL := help
 

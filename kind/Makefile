@@ -1,8 +1,7 @@
 COMMON_DIR ?= ../common
 
 CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-small.yaml"
-CAMUNDA_MODEL_FILE = "$(COMMON_DIR)/camunda/EightTasks.bpmn"
+CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-dev.yaml"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform
 

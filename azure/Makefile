@@ -3,14 +3,19 @@ COMMON_DIR ?= ../common
 RESOURCE_GROUP ?= camunda-group
 NODE_RESOURCE_GROUP ?= camunda-node-group
 CLUSTER_NAME ?= camunda-cluster-01
-REGION ?= eastus2
-MACHINE_TYPE ?= Standard_B2s
+#REGION ?= eastus2
+REGION ?= eastus
+# https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
+# Note that there is a default Quota of 10 vCPUs for each machine type and region
+# You have to request a quota increase. I got the message "This quota cannot be increased at this time." when requesting
+# that the quota be increased from 10 to 30 for the eastus2 region.
+# MACHINE_TYPE ?= Standard_B2s
+MACHINE_TYPE ?= Standard_A8_v2
 MIN_NODE_COUNT ?= 1
 MAX_NODE_COUNT ?= 256
 
 CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/zeebe-small-profile.yaml"
-CAMUNDA_MODEL_FILE = "$(COMMON_DIR)/camunda/EightTasks.bpmn"
+CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform
 

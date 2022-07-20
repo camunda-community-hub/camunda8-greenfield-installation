@@ -1,3 +1,5 @@
+# This is a very small cluster useful for running locally and for development
+
 global:
   identity:
     auth:

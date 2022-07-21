@@ -23,8 +23,10 @@ clean-k8s: use-k8s clean-kube
 .PHONY: clean-kube
 clean-kube:
 #	-kubectl delete pvc --all
-	@echo "Please check the console if all PVCs have been deleted: https://console.cloud.google.com/compute/disks?authuser=0&project=$(PROJECT)&supportedpurview=project"
+	@echo "PVC names have been saved inside 'pvc_disks.tmp'. Please check the console if all PVCs have been deleted: https://console.cloud.google.com/compute/disks?authuser=0&project=$(PROJECT)&supportedpurview=project"
+	gcloud compute disks list --filter="zone ~ us-east4-a AND users ~ $(CLUSTER_NAME) AND name ~ pvc" > .disks
 	gcloud container clusters delete $(CLUSTER_NAME) --region $(REGION) --async --quiet
+	./google.sh -d $(REGION)
 
 .PHONY: use-k8s
 use-k8s:
@@ -35,3 +37,7 @@ use-k8s:
 urls:
 	@echo "Cluser: https://console.cloud.google.com/kubernetes/clusters/details/$(REGION)/$(CLUSTER_NAME)/details?project=$(PROJECT)"
 	@echo "Workloads: https://console.cloud.google.com/kubernetes/workload/overview?project=$(PROJECT)&pageState=(%22savedViews%22:(%22i%22:%221cd686805f0e43189d3b33934863017b%22,%22c%22:%5B%22gke%2F$(REGION)%2F$(CLUSTER_NAME)%22%5D,%22n%22:%5B%5D))"
+
+.PHONY: disks
+disks:
+	gcloud compute disks list --filter="zone ~ us-east4-a AND users ~ $(CLUSTER_NAME) AND name ~ pvc"

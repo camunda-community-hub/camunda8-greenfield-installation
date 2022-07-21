@@ -22,5 +22,12 @@ all: k8s urls
 .PHONY: clean
 clean: clean-k8s
 
-include ./include/kubernetes-gke.mk
+.PHONY: camunda
+camunda: zeebe await-zeebe
+
+.PHONY: clean-camunda
+clean-camunda: clean-zeebe
+
+include ./kubernetes-gke.mk
 include $(COMMON_DIR)/metrics/metrics.mk
+include $(COMMON_DIR)/camunda/zeebe.mk

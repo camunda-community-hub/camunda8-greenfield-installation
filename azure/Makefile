@@ -1,7 +1,6 @@
 COMMON_DIR ?= ../common
 
 RESOURCE_GROUP ?= camunda-group
-NODE_RESOURCE_GROUP ?= camunda-node-group
 CLUSTER_NAME ?= camunda-cluster-01
 #REGION ?= eastus2
 REGION ?= eastus

@@ -55,11 +55,16 @@ The next step is to create a Kubernetes Cluster on the provider of your choice.
 
 Update the following bash variables so they are appropriate for your specific environment. 
 
-     resource-group ?= <RESOURCE GROUP>
-     node-resource-group ?= <NODE RESOURCE GROUP>
-     clustername ?= <CLUSTER NAME>
-     region ?= <REGION>
-     machine-type ?= <MACHINE TYPE>
+     RESOURCE_GROUP ?= <YOUR GROUP NAME>
+     CLUSTER_NAME ?= <YOUR CLUSTER NAME>
+     REGION ?= eastus
+     MACHINE_TYPE ?= Standard_A8_v2
+     MIN_NODE_COUNT ?= 1
+     MAX_NODE_COUNT ?= 256
+
+> :information_source: **Note** By default, the vCPU Quota is set to 10 but the default cluster started below requires 
+> more than 10 vCPUS. Either configure the camunda-values-dev.yaml file, or you may need to go to the Quotas page and 
+> request an increase in the vCPU quota for the machine type that you choose. 
 
 Run `make k8s` to create an Azure Kubernetes cluster
 
@@ -89,7 +94,7 @@ Edit the `./google/Makefile` and set the following bash variables so that they a
      PROJECT ?= <YOUR PROJECT>
      CLUSTER_NAME ?= <NAME OF CLUSTER>
      REGION ?= us-east1-b
-     MACHINE_TYPE ?= n1-standard-16
+     MACHINE_TYPE ?= n1-standard-8
 
 Run `make k8s` to create an Google Kubernetes cluster
 
@@ -99,7 +104,31 @@ Run `make k8s` to create an Google Kubernetes cluster
 
 ## Amazon Web Services Prerequisites
 
-TODO: steps coming soon!
+1. Verify `aws` command line tool is installed (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+       aws --help
+
+2. Configure `aws` to connect to your account. If you don't already have one, you'll need to sign up for a new
+   AWS Account. Use the following command to configure the `aws` tool to use your AWS Access Key ID and secret. 
+
+       $ aws configure
+
+Double check you can connect by running the following
+
+       $ aws iam get-account-summary
+
+3. Verify `eksctl` is installed (https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+
+       $ eksctl version
+
+4. Use the AWS-specific `Makefile` to create a GKE cluster
+
+`cd` into the `aws` directory
+
+Edit the `./aws/Makefile` and set the following bash variables so that they are appropriate for your specific environment.
+
+    CLUSTER_NAME ?= <YOUR CLUSTER NAME>
+    REGION ?= us-east-1
 
 ## Kind (local development environment) Prerequisites 
 
@@ -119,13 +148,13 @@ experimenting with Kubernetes.
 
 # Commands
 
-If you haven't already, make sure to follow the Prequisite steps above. At this point, you should have a Kubernetes 
+If you haven't already, make sure to follow the Prerequisite steps above. At this point, you should have a Kubernetes 
 Cluster created on the cloud provider of your choice. 
 
 See the sections below for the commands that are available to install (and uninstall) different camunda related 
 components
 
-## Camunda 8 Environment
+## Install (and Uninstall) Camunda 8 Environment
 
 To start a basic Camunda environment, run the following: 
 
@@ -134,7 +163,7 @@ To start a basic Camunda environment, run the following:
 By default, this command will create a Camunda 8 environment that includes Zeebe Brokers, the Zeebe Gateway, 
 Elasticsearch, Operate, and Tasklist. 
 
-To remove the environment do this: 
+When you're finished, or want to start over, you can remove camunda by running: 
 
     make clean-camunda
 

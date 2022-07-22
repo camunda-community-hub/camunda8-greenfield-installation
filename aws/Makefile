@@ -8,6 +8,8 @@ CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform
 
+ACCOUNT_ID ?= $(./aws.sh -a)
+
 .DEFAULT_GOAL := help
 
 .PHONY: help

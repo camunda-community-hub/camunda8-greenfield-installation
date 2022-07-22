@@ -1,3 +1,6 @@
 .idea/
 *.iml
 .disks
+
+aws/cluster-autoscaler-policy.json
+aws/cluster-autoscaler-autodiscover.yaml

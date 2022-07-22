@@ -3,31 +3,40 @@
 
 # Camunda 8 Greenfield Installation
 
-This project contains Makefiles that help to quickly create a Camunda 8 self-managed Kubernetes environment in
-Google Cloud or Microsoft Azure. (Stay tuned: AWS comming soon!)
+You're just 3 steps away from creating a Camunda 8 self-managed Kubernetes Cluster!
 
-To get started, first make sure you have installed and configured the prerequisite tools (see the sections below for more info). 
+This project make it easier to build Camunda 8 clusters in any of the following Kubernetes Environments: 
 
-Then, run `make k8s` to create a new kubernetes cluster. 
-Run `make camunda` to install and start Camunda in the cluster.
+- Google Cloud
+- Microsoft Azure
+- Amazon Web Services.
+- Kind / Docker Desktop (Local Development Environment)
+
+Step 1: Make sure you have the command line tools installed required for the cloud provider you want to use.
+
+Step 2: Run `make k8s` to create a new kubernetes cluster.
+
+Step 3: Run `make camunda` to install and start Camunda in your new k8s cluster! 
 
 # Global Prerequisites
 
 Complete the following steps regardless of which cloud provider you use.  
 
-1. Verify `kubectl` is installed
+1. Clone this [Camunda 8 Greenfield Installation git repository](https://github.com/camunda-community-hub/camunda8-greenfield-installation)
+
+2. Verify `kubectl` is installed
 
        kubectl --help
 
-2. Verify `helm` is installed. Helm version must be at least `3.7.0`
+3. Verify `helm` is installed. Helm version must be at least `3.7.0`
 
        helm version
 
-3. Clone this [Camunda 8 Greenfield Installation git repository](https://github.com/camunda-community-hub/camunda8-greenfield-installation)
+4. Verify GNU `make` is installed. 
 
-At this point, you should have a local directory named `camunda8-greenfield-installation`
+       make --version
 
-The next step is to create a Kubernetes Cluster on the provider of your choice.
+The next step is to create a Kubernetes Cluster on the cloud provider of your choice.
 
 # Microsoft Azure Prerequisites
 
@@ -53,7 +62,7 @@ The next step is to create a Kubernetes Cluster on the provider of your choice.
 
 `cd` into the `azure` directory
 
-Update the following bash variables so they are appropriate for your specific environment. 
+Update the `./azure/Makefile`. Edit the bash variables so that they are appropriate for your specific environment. 
 
      RESOURCE_GROUP ?= <YOUR GROUP NAME>
      CLUSTER_NAME ?= <YOUR CLUSTER NAME>
@@ -77,8 +86,6 @@ Run `make k8s` to create an Azure Kubernetes cluster
 1. Verify `gcloud` is installed (https://cloud.google.com/sdk/docs/install-sdk)
 
        gcloud --help
-       # Google also requires the following plugin as of 2022
-       gcloud components install gke-gcloud-auth-plugin
 
 2. Make sure you are authenticated. If you don't already have one, you'll need to sign up for a new
    Google Cloud Account. Then, run the following command and then follow the instructions to authenticate via your browser.
@@ -130,6 +137,12 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
     CLUSTER_NAME ?= <YOUR CLUSTER NAME>
     REGION ?= us-east-1
 
+5. Run `make k8s` to create a new AKS Cluster
+ 
+Be patient, this can take several minutes!
+
+6. Run `make urls` to see which url to use in order to manage your AKS Cluster
+
 ## Kind (local development environment) Prerequisites 
 
 It's possible to use `kind` to experiment with kubernetes on your local developer laptop, but please keep in mind that 
@@ -146,19 +159,16 @@ experimenting with Kubernetes.
        cd kind
        make k8s
 
-# Commands
+# Install Camunda 8 Environment
 
-If you haven't already, make sure to follow the Prerequisite steps above. At this point, you should have a Kubernetes 
-Cluster created on the cloud provider of your choice. 
-
-See the sections below for the commands that are available to install (and uninstall) different camunda related 
-components
-
-## Install (and Uninstall) Camunda 8 Environment
+If you haven't already, make sure to follow the Prerequisite steps for your specific cloud provider. At this point, 
+you should have a Kubernetes Cluster created on the cloud provider of your choice.
 
 To start a basic Camunda environment, run the following: 
 
      make camunda
+
+Be patient, this can take several minutes for nodes to auto scale and for services to start.
 
 By default, this command will create a Camunda 8 environment that includes Zeebe Brokers, the Zeebe Gateway, 
 Elasticsearch, Operate, and Tasklist. 

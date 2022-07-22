@@ -20,13 +20,15 @@ kube:
 .PHONY: clean-k8s
 clean-k8s: use-k8s clean-kube
 
-.PHONY: clean-kube
+.PHONY: clean-camunda clean-kube
 clean-kube:
 #	-kubectl delete pvc --all
-	@echo "PVC names have been saved inside 'pvc_disks.tmp'. Please check the console if all PVCs have been deleted: https://console.cloud.google.com/compute/disks?authuser=0&project=$(PROJECT)&supportedpurview=project"
+	@echo "PVC names have been saved inside '.disks'. Please check the console if all PVCs have been deleted: https://console.cloud.google.com/compute/disks?authuser=0&project=$(PROJECT)&supportedpurview=project"
+# Save pvc names to a file so we can make sure to delete them later if needed. However, if clean-camunda is run, this shouldn't be needed
 	gcloud compute disks list --filter="zone ~ us-east4-a AND users ~ $(CLUSTER_NAME) AND name ~ pvc" > .disks
 	gcloud container clusters delete $(CLUSTER_NAME) --region $(REGION) --async --quiet
-	./google.sh -d $(REGION)
+# As long as clean-camunda is called first, this is not needed
+#	./google.sh -d $(REGION)
 
 .PHONY: use-k8s
 use-k8s:

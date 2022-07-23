@@ -37,3 +37,6 @@ urls:
 	@echo "Cluster: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerService/managedClusters/$(CLUSTER_NAME)/overview"
 #	@echo "Workflows: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerService/managedClusters/$(CLUSTER_NAME)/workflows"
 
+.PHONY: ingress-zeebe
+ingress:
+	kubectl apply -f zeebe-lb.yaml

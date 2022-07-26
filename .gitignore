@@ -4,3 +4,4 @@
 
 aws/cluster-autoscaler-policy.json
 aws/cluster-autoscaler-autodiscover.yaml
+aws/cluster.yaml

@@ -5,13 +5,9 @@ metadata:
   name: <YOUR CLUSTER NAME>
   region: <YOUR REGION>
 
-nodeGroups:
+managedNodeGroups:
   - name: ng-1
-    availabilityZones: <YOUR AVAILABILITY ZONES>
     instanceType: <YOUR INSTANCE TYPE>
-    minSize: <YOUR MIN SIZE>
-    maxSize: <YOUR MAX SIZE>
-    desiredCapacity: <YOUR MIN SIZE>
-    volumeSize: 100
-    ssh:
-      allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key
+    desiredCapacity: 4
+    volumeSize: 80
+    privateNetworking: true

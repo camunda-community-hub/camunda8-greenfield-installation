@@ -2,7 +2,7 @@
 k8s: cluster.yaml kube
 
 cluster.yaml:
-	sed "s/<YOUR CLUSTER NAME>/$(CLUSTER_NAME)/g; s/<YOUR REGION>/$(REGION)/g; s/<YOUR INSTANCE TYPE>/$(INSTANCE_TYPE)/g; s/<YOUR MIN SIZE>/$(MIN_SIZE)/g; s/<YOUR MAX SIZE>/$(MAX_SIZE)/g" cluster.tpl.yaml > cluster.yaml
+	sed "s/<YOUR CLUSTER NAME>/$(CLUSTER_NAME)/g; s/<YOUR REGION>/$(REGION)/g; s/<YOUR INSTANCE TYPE>/$(INSTANCE_TYPE)/g; s/<YOUR MIN SIZE>/$(MIN_SIZE)/g; s/<YOUR MAX SIZE>/$(MAX_SIZE)/g; s/<YOUR AVAILABILITY ZONES>/$(AVAILABILITY_ZONES)/g;" cluster.tpl.yaml > cluster.yaml
 
 cluster-autoscaler-policy.json:
 	sed "s/<YOUR CLUSTER NAME>/$(CLUSTER_NAME)/g" cluster-autoscaler-policy.tpl.json > cluster-autoscaler-policy.json
@@ -51,7 +51,7 @@ kube:
 	kubectl apply -f ./ssd-storageclass-aws.yaml
 
 .PHONY: clean-k8s
-clean-k8s: use-k8s clean-kube
+clean-k8s: use-k8s clean-kube clean-files
 
 .PHONY: clean-kube
 clean-kube: clean-camunda

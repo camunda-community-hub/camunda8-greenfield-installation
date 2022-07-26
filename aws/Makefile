@@ -2,8 +2,9 @@ COMMON_DIR ?= ../common
 
 CLUSTER_NAME ?= <YOUR CLUSTER NAME>
 REGION ?= us-east-1
-AVAILABILITY_ZONES ?= ["us-east-1a", "us-east-1b"]
-INSTANCE_TYPE ?= c7g.2xlarge
+# TODO: Availability zones isn't currently used anywhere
+AVAILABILITY_ZONES ?= ['us-east-1a', 'us-east-1b']
+INSTANCE_TYPE ?= m5.2xlarge
 # TODO: Currently, auto scaling configuration using these scripts for AWS is not quite working
 # So, for now, MIN SIZE is also used as the starting size of the cluster
 MIN_SIZE ?= 4

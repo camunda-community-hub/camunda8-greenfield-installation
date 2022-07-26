@@ -12,10 +12,10 @@ cluster-autoscaler-autodiscover.yaml:
 
 .PHONY: clean-files
 clean-files:
-	rm cluster.yaml
-	rm cluster-autoscaler-autodiscover.yaml
-	rm cluster-autoscaler-autodiscover-2.yaml
-	rm cluster-autoscaler-policy.json
+	rm -f cluster.yaml
+	rm -f cluster-autoscaler-autodiscover.yaml
+	rm -f cluster-autoscaler-autodiscover-2.yaml
+	rm -f cluster-autoscaler-policy.json
 
 .PHONY: autoscaler
 autoscaler: cluster-autoscaler-policy.json cluster-autoscaler-autodiscover.yaml
@@ -47,7 +47,7 @@ logs-autoscaler:
 
 .PHONY: kube
 kube:
-	eksctl create cluster -f cluster.yaml --name $(CLUSTER_NAME) --region $(REGION) --asg-access
+	eksctl create cluster -f cluster.yaml
 	kubectl apply -f ./ssd-storageclass-aws.yaml
 
 .PHONY: clean-k8s

@@ -2,6 +2,11 @@ COMMON_DIR ?= ../common
 
 CLUSTER_NAME ?= <YOUR CLUSTER NAME>
 REGION ?= us-east-1
+INSTANCE_TYPE ?= c7g.2xlarge
+# TODO: Currently, auto scaling configuration using these scripts for AWS is not quite working
+# So, for now, MIN SIZE is also used as the starting size of the cluster
+MIN_SIZE ?= 4
+MAX_SIZE ?= 10
 
 CAMUNDA_NAMESPACE ?= camunda
 CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"

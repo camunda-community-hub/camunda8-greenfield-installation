@@ -136,6 +136,11 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
 
     CLUSTER_NAME ?= <YOUR CLUSTER NAME>
     REGION ?= us-east-1
+    INSTANCE_TYPE ?= c7g.2xlarge
+    # TODO: Currently, auto scaling configuration using these scripts for AWS is not quite working
+    # So, for now, MIN SIZE is also used as the starting size of the cluster
+    MIN_SIZE ?= 4
+    MAX_SIZE ?= 10
 
 5. Run `make k8s` to create a new AKS Cluster
  

@@ -30,8 +30,8 @@ help:
 .PHONY: all
 all: k8s urls
 
-.PHONY: clean
-clean: clean-camunda clean-k8s
+.PHONY: clean-all
+clean-all: clean-camunda clean-k8s
 
 .PHONY: camunda
 camunda: zeebe await-zeebe

@@ -26,8 +26,8 @@ help:
 .PHONY: all
 all: k8s urls
 
-.PHONY: clean
-clean: clean-k8s
+.PHONY: clean-all
+clean-all: clean-k8s
 
 .PHONY: camunda
 camunda: zeebe await-zeebe

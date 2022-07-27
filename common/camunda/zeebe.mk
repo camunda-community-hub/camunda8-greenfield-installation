@@ -53,6 +53,10 @@ port-zeebe:
 port-identity:
 	kubectl port-forward svc/camunda-identity 8080:80 -n $(CAMUNDA_NAMESPACE)
 
+.PHONY: port-keycloak
+port-keycloak:
+	kubectl port-forward svc/camunda-keycloak 18080:80 -n $(CAMUNDA_NAMESPACE)
+
 .PHONY: port-operate
 port-operate:
 	kubectl port-forward svc/camunda-operate 8081:80 -n $(CAMUNDA_NAMESPACE)
@@ -76,3 +80,9 @@ pods:
 .PHONY: logs
 logs:
 	kubectl logs --namespace $(CAMUNDA_NAMESPACE) -f $(pod)
+
+
+.PHONY: keycloak-password
+keycloak-password:
+	helm upgrade keycloak bitnami/keycloak --set auth.adminPassword=$(KEYCLOAK_ADMIN_PASSWORD) --set auth.managementPassword=$(KEYCLOAK_MANAGEMENT_PASSWORD)
+

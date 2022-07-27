@@ -13,8 +13,10 @@ MACHINE_TYPE ?= Standard_A8_v2
 MIN_NODE_COUNT ?= 1
 MAX_NODE_COUNT ?= 256
 
+
+
 CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"
+CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-identity.yaml"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform
 
@@ -34,7 +36,7 @@ all: k8s urls
 clean-all: clean-camunda clean-k8s
 
 .PHONY: camunda
-camunda: zeebe await-zeebe
+camunda: zeebe await-zeebe ingress
 
 .PHONY: clean-camunda
 clean-camunda: clean-zeebe

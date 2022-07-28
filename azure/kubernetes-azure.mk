@@ -1,6 +1,13 @@
 .PHONY: k8s
 k8s: kube
 
+camunda-values-identity.yaml:
+	sed "s/<PUBLIC IP ADDRESS>/$(PUBLIC_IP_ADDRESS)/g;" ../common/camunda/camunda-values-identity.tpl.yaml > camunda-values-identity.yaml
+
+.PHONY: clean-files
+clean-files:
+	rm -f camunda-values-identity.yaml
+
 .PHONY: kube
 kube:
 	az group create --name $(RESOURCE_GROUP) --location $(REGION)
@@ -44,7 +51,7 @@ urls:
 #	@echo "Workflows: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerService/managedClusters/$(CLUSTER_NAME)/workflows"
 
 .PHONY: ingress
-ingress:
+ingress: namespace
 	kubectl apply -f ingress-identity-gw.yaml
 	kubectl apply -f ingress-keycloak-gw.yaml
 	kubectl apply -f ingress-operate-gw.yaml

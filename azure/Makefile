@@ -13,10 +13,10 @@ MACHINE_TYPE ?= Standard_A8_v2
 MIN_NODE_COUNT ?= 1
 MAX_NODE_COUNT ?= 256
 
-
+PUBLIC_IP_ADDRESS ?= <FRONT END IP from APP Gateway>
 
 CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-identity.yaml"
+CAMUNDA_VALUES_FILE ?= "camunda-values-identity.yaml"
 CAMUNDA_RELEASE ?= camunda
 CAMUNDA_CHART ?= camunda/camunda-platform
 
@@ -36,10 +36,10 @@ all: k8s urls
 clean-all: clean-camunda clean-k8s
 
 .PHONY: camunda
-camunda: zeebe await-zeebe ingress
+camunda: camunda-values-identity.yaml ingress zeebe await-zeebe
 
 .PHONY: clean-camunda
-clean-camunda: clean-zeebe
+clean-camunda: clean-zeebe clean-files
 
 include ./kubernetes-azure.mk
 include $(COMMON_DIR)/metrics/metrics.mk

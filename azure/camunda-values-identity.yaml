@@ -4,9 +4,11 @@ global:
       # Disable the Identity authentication
       # it will fall back to basic-auth: demo/demo as default user
       enabled: true
-      publicIssuerUrl: "http://40.88.53.53/auth/realms/camunda-platform"
-      operate.redirectUrl: "http://40.88.53.53/operate"
-      operate.tasklistUrl: "http://40.88.53.53/tasklist"
+      publicIssuerUrl: "http://20.81.69.70/auth/realms/camunda-platform"
+      operate:
+        redirectUrl: "http://20.81.69.70/operate"
+      tasklist:
+        redirectUrl: "http://20.81.69.70/tasklist"
 
 identity:
   enabled: true
@@ -17,12 +19,12 @@ identity:
       managementUser: manager
       managementPassword: camunda
   env:
-    - name: SERVER_SERVLET_CONTEXT_PATH
-      value: "/identity"
+#    - name: SERVER_SERVLET_CONTEXT_PATH
+#      value: "/identity"
     - name: IDENTITY_URL
-      value: "http://40.88.53.53/identity"
+      value: "http://20.81.69.70"
     - name: KEYCLOAK_URL
-      value: "http://40.88.53.53/auth"
+      value: "http://20.81.69.70/auth"
   ingress:
     enabled: false
 

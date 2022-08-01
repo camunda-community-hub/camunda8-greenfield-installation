@@ -11,3 +11,5 @@ managedNodeGroups:
     desiredCapacity: 4
     volumeSize: 80
     privateNetworking: true
+
+availabilityZones: <YOUR AVAILABILITY ZONES>

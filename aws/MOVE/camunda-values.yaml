@@ -1,0 +1,47 @@
+# Chart values for the Camunda Platform 8 Helm chart.
+# This file deliberately contains only the values that differ from the defaults.
+# For changes and documentation, use your favorite diff tool to compare it with:
+# https://github.com/camunda/camunda-platform-helm/blob/main/charts/camunda-platform/values.yaml
+
+global:
+  identity:
+    auth:
+      publicIssuerUrl: "http://keycloak.all2.us/auth/realms/camunda-platform"
+      operate:
+        redirectUrl: "http://operate.all2.us"
+      tasklist:
+        redirectUrl: "http://tasklist.all2.us"
+      optimize:
+        redirectUrl: "http://optimize.all2.us"
+operate:
+  ingress:
+    enabled: true
+    host: "operate.all2.us"
+tasklist:
+  ingress:
+    enabled: true
+    host: "tasklist.all2.us"
+optimize:
+  env:
+    - name: CAMUNDA_OPTIMIZE_EMAIL_ACCESS_URL
+      value: "http://optimize.all2.us"
+  ingress:
+    enabled: true
+    host: "optimize.all2.us"
+identity:
+  env:
+    - name: IDENTITY_URL
+      value: "http://identity.all2.us"
+  keycloak:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hostname: "keycloak.all2.us"
+    extraEnvVars:
+      - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+        value: "true"
+      - name: KEYCLOAK_FRONTEND_URL
+        value: "http://keycloak.all2.us"
+  ingress:
+    enabled: true
+    host: "identity.all2.us"

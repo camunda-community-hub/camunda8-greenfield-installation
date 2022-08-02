@@ -72,11 +72,12 @@ Update the `./azure/Makefile`. Edit the bash variables so that they are appropri
     minSize ?= 1
     maxSize ?= 256
 
-> :information_source: **Note** By default, the vCPU Quota is set to 10 but the default cluster started below requires 
-> more than 10 vCPUS. You may need to go to the Quotas page and request an increase in the vCPU quota for the 
-> machine type that you choose. 
+> :information_source: **Note** By default, the vCPU Quota is set to 10 but the default cluster started below requires
+> more than 10 vCPUS. You may need to go to the Quotas page and request an increase in the vCPU quota for the
+> machine type that you choose.
 
-** NOTE THIS IS STILL WIP, the ingress will not be configured with correct IP yet, it still has to be done manually **
+> :information_source: **Note** The make file will prompt for an IP address of the app gateway after the ingress controller
+> has been created. Eventually we hope to update the scripts to automatically configure the ip address, but for now, it's a manual step
 
 Run `make` to create an Azure Kubernetes cluster and install Camunda.
 
@@ -144,7 +145,8 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
 > :information_source: **Note** Currently autoscaling for AWS is not working yet. For now, minSize is also used to set 
 > the starting size of the cluster
 
-** NOTE THIS IS STILL WIP, the ingress will not be configured with correct IP yet, it still has to be done manually **
+> :information_source: **Note** The make file will prompt for an IP address of the AWS Load Balancer after the ingress controller
+> has been created. Eventually we hope to update the scripts to automatically configure the ip address, but for now, it's a manual step
 
 5. Run `make` to create a new AKS Cluster and install Camunda
 

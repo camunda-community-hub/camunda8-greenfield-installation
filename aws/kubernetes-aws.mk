@@ -2,13 +2,9 @@
 cluster.yaml:
 	sed "s/<YOUR CLUSTER NAME>/$(clusterName)/g; s/<YOUR REGION>/$(region)/g; s/<YOUR INSTANCE TYPE>/$(machineType)/g; s/<YOUR MIN SIZE>/$(minSize)/g; s/<YOUR MAX SIZE>/$(maxSize)/g; s/<YOUR AVAILABILITY ZONES>/$(zones)/g;" cluster.tpl.yaml > cluster.yaml
 
-camunda-values.yaml:
-	sed "s/127.0.0.1/$(ipAddress)/g;" camunda-values.tpl.yaml > camunda-values.yaml
-
 .PHONY: clean-files
 clean-files:
 	rm -f cluster.yaml
-	rm -f camunda-values.yaml
 
 .PHONY: oidc-provider
 oidc-provider:

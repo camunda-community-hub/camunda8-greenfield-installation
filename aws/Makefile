@@ -4,30 +4,40 @@ clusterName ?= camunda-greenfield
 region ?= us-east-1
 zones ?= ['us-east-1a', 'us-east-1b']
 machineType ?= m5.2xlarge
-
-# TODO: Currently, auto scaling configuration using these scripts for AWS is not quite working
-# So, for now, MIN SIZE is also used as the starting size of the cluster
+# TODO: Currently, auto scaling configuration using these scripts for AWS is not configured
+# for now, minSize is also used as the starting size of the cluster
 minSize ?= 4
 maxSize ?= 10
 
+chartValues ?= "$(helmProfilesDir)/ingress-nginx/camunda-values.yaml"
+
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
-# Chart values files
-# TODO: test passing in a list
-chartValues ?= "camunda-values.yaml"
 # Helm release name
 release ?= camunda
 # Helm chart coordinates for Camunda
 chart ?= camunda/camunda-platform
 
-ipAddress ?= <IP ADDRESS>
-
 .PHONY: all
-all: kube oidc-provider ingress camunda-values.yaml camunda urls
+all: cluster.yaml kube oidc-provider ingress-nginx-camunda urls
+
+.PHONY: ingress-nginx-camunda
+ingress-nginx-camunda:
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-nginx
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-ip-from-commandline camunda
+# TODO export variables and set flag to override default values
+# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 .PHONY: clean
-clean: clean-camunda clean-ingress clean-kube clean-files
+clean: clean-ingress-nginx-camunda clean-kube clean-files
 
-include $(helmProfilesDir)/include/ingress-nginx.mk
-include $(helmProfilesDir)/include/camunda.mk
+.PHONY: clean-ingress-nginx-camunda
+clean-ingress-nginx-camunda:
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx clean
+# TODO export variables and set flag to override default values
+# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
+
 include ./kubernetes-aws.mk
+# Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets
+#       such as `make port-zeebe`, etc.
+include $(helmProfilesDir)/include/camunda.mk

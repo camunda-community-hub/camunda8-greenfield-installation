@@ -1,33 +1,29 @@
-COMMON_DIR ?= ../common
+helmProfilesDir ?= ../../camunda-8-helm-profiles
 
-PROJECT ?= <CHANGE_ME> #camunda-researchanddevelopment
-CLUSTER_NAME ?= camunda-cluster-01
-REGION ?= us-east1-b
-MACHINE_TYPE ?= n1-standard-16
+project ?= camunda-researchanddevelopment
+clusterName ?= camunda-greenfield-01
+region ?= us-east1-b
+machineType ?= n1-standard-16
 
-CAMUNDA_NAMESPACE ?= camunda
-CAMUNDA_VALUES_FILE ?= "$(COMMON_DIR)/camunda/camunda-values-default.yaml"
-CAMUNDA_RELEASE ?= camunda
-CAMUNDA_CHART ?= camunda/camunda-platform
+# Camunda components will be installed into the following Kubernetes namespace
+namespace ?= camunda
+# Chart values files
+# TODO: test passing in a list
+chartValues ?= "camunda-values.yaml"
+# Helm release name
+release ?= camunda
+# Helm chart coordinates for Camunda
+chart ?= camunda/camunda-platform
 
-.DEFAULT_GOAL := help
-
-.PHONY: help
-help:
-	@echo "Run 'make k8s' to create a new cluster. See README.md for more."
+ipAddress ?= 35.231.29.210
 
 .PHONY: all
-all: k8s urls
+all: kube ingress camunda-values.yaml camunda urls
 
-.PHONY: clean-all
-clean-all: clean-k8s
+# TODO: fix clean-ingress and add back?
+.PHONY: clean
+clean: clean-camunda clean-kube clean-files
 
-.PHONY: camunda
-camunda: zeebe await-zeebe
-
-.PHONY: clean-camunda
-clean-camunda: clean-zeebe
-
+include $(helmProfilesDir)/include/ingress-nginx.mk
+include $(helmProfilesDir)/include/camunda.mk
 include ./kubernetes-gke.mk
-include $(COMMON_DIR)/metrics/metrics.mk
-include $(COMMON_DIR)/camunda/zeebe.mk

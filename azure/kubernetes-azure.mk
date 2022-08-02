@@ -1,62 +1,57 @@
-.PHONY: k8s
-k8s: kube
+camunda-values.yaml:
+	sed "s/127.0.0.1/$(ipAddress)/g;" camunda-values.tpl.yaml > camunda-values.yaml
 
-camunda-values-identity.yaml:
-	sed "s/<PUBLIC IP ADDRESS>/$(PUBLIC_IP_ADDRESS)/g;" ../common/camunda/camunda-values-identity.tpl.yaml > camunda-values-identity.yaml
+ingress-azure.yaml:
+	sed "s/127.0.0.1/$(ipAddress)/g;" ingress-azure.tpl.yaml > ingress-azure.yaml
 
 .PHONY: clean-files
 clean-files:
-	rm -f camunda-values-identity.yaml
+	rm -f camunda-values.yaml
+	rm -f ingress-azure.yaml
 
 .PHONY: kube
 kube:
-	az group create --name $(RESOURCE_GROUP) --location $(REGION)
+	az group create --name $(resourceGroup) --location $(region)
 	az aks create \
-      --resource-group $(RESOURCE_GROUP) \
-      --name $(CLUSTER_NAME) \
-      --node-vm-size $(MACHINE_TYPE) \
+      --resource-group $(resourceGroup) \
+      --name $(clusterName) \
+      --node-vm-size $(machineType) \
       --node-count 1 \
       --vm-set-type VirtualMachineScaleSets \
       --enable-cluster-autoscaler \
-      --min-count $(MIN_NODE_COUNT) \
-      --max-count $(MAX_NODE_COUNT) \
+      --min-count $(minSize) \
+      --max-count $(maxSize) \
       --network-plugin azure \
       --enable-managed-identity \
       -a ingress-appgw \
       --appgw-name myApplicationGateway \
       --appgw-subnet-cidr "10.225.0.0/16" \
       --generate-ssh-keys
-	kubectl config unset clusters.$(CLUSTER_NAME)
-	kubectl config unset users.clusterUser_$(RESOURCE_GROUP)_$(CLUSTER_NAME)
-	az aks get-credentials --resource-group $(RESOURCE_GROUP) --name $(CLUSTER_NAME)
+	kubectl config unset clusters.$(clusterName)
+	kubectl config unset users.clusterUser_$(resourceGroup)_$(clusterName)
+	az aks get-credentials --resource-group $(resourceGroup) --name $(clusterName)
 	kubectl apply -f ./ssd-storageclass-azure.yaml
 
-.PHONY: clean-k8s
-clean-k8s: use-k8s clean-kube
-
 .PHONY: clean-kube
-clean-kube:
-	az aks delete -y -g $(RESOURCE_GROUP) -n $(CLUSTER_NAME)
-	az group delete -y --resource-group $(RESOURCE_GROUP)
+clean-kube: use-kube
+	az aks delete -y -g $(resourceGroup) -n $(clusterName)
+	az group delete -y --resource-group $(resourceGroup)
 
-.PHONY: use-k8s
-use-k8s:
-	kubectl config unset clusters.$(CLUSTER_NAME)
-	kubectl config unset users.clusterUser_$(RESOURCE_GROUP)_$(CLUSTER_NAME)
-	az aks get-credentials --resource-group $(RESOURCE_GROUP) --name $(CLUSTER_NAME)
+.PHONY: use-kube
+use-kube:
+	kubectl config unset clusters.$(clusterName)
+	kubectl config unset users.clusterUser_$(resourceGroup)_$(clusterName)
+	az aks get-credentials --resource-group $(resourceGroup) --name $(clusterName)
 
 .PHONY: urls
 urls:
-	@echo "Cluster: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerService/managedClusters/$(CLUSTER_NAME)/overview"
-#	@echo "Workflows: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerService/managedClusters/$(CLUSTER_NAME)/workflows"
+	@echo "Cluster: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(subscriptionId)/resourceGroups/$(resourceGroup)/providers/Microsoft.ContainerService/managedClusters/$(clusterName)/overview"
 
+# TODO: move azure ingress related targets into camunda-8-helm-profiles?
 .PHONY: ingress
-ingress: namespace
-	kubectl apply -f ingress-identity-gw.yaml
-	kubectl apply -f ingress-keycloak-gw.yaml
-	kubectl apply -f ingress-operate-gw.yaml
-	kubectl apply -f ingress-tasklist-gw.yaml
+ingress: namespace ingress-azure.yaml camunda-values.yaml
+	kubectl apply -f ingress-azure.yaml
 
-.PHONY: ingress-zeebe
-ingress-zeebe:
-	kubectl apply -f zeebe-lb.yaml
+.PHONY: clean-ingress
+clean-ingress:
+	kubectl delete ingress ingress-azure -n camunda

@@ -1,14 +1,21 @@
 [![Community Extension](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 
 # Camunda 8 Greenfield Installation
 
-Create a Camunda 8 self-managed Kubernetes Cluster in 2 Steps:
+Create a Camunda 8 self-managed Kubernetes Cluster in 3 Steps:
 
-Step 1: Install the command line tools for your cloud provider: Google Cloud, Microsoft Azure, Amazon Web Services, 
-        or Kind (for local development). 
+Step 1: Setup some [global prerequisites](#global-prerequisites)
 
-Step 2: Run `make` to create a new kubernetes cluster and install a default Camunda environment.
+Step 2: Setup command line tools for your cloud provider: 
+
+- [Microsoft Azure](#microsoft-azure-prerequisites)
+- [Google Cloud](#google-compute-engine-prerequisites)
+- [Amazon Web Services](#amazon-web-services-prerequisites)
+- [Kind](#kind-local-development-environment-prerequisites) (for local development)
+
+Step 3: Run `make` to create a new kubernetes cluster and install a default Camunda environment.
 
 # Global Prerequisites
 

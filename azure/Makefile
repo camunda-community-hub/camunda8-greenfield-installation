@@ -13,27 +13,38 @@ machineType ?= Standard_A8_v2
 minSize ?= 1
 maxSize ?= 256
 
-# Change this to match the front end IP address from App Gateway
-ipAddress ?= <IP ADDRESS>
+chartValues ?= "$(helmProfilesDir)/ingress-azure/camunda-values.yaml"
 
 # TODO: I'd rather not have to call a shell script, but I can't get this to work any other way?
 subscriptionId ?= $(shell "./azure.sh")
 
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
-# Chart values files
-# TODO: test passing in a list
-chartValues ?= "camunda-values.yaml"
 # Helm release name
 release ?= camunda
 # Helm chart coordinates for Camunda
 chart ?= camunda/camunda-platform
 
+
 .PHONY: all
-all: kube ingress camunda urls
+all: kube ingress-nginx-camunda urls
+
+.PHONY: ingress-nginx-camunda
+ingress-nginx-camunda:
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-azure all
+# TODO export variables and set flag to override default values
+# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 .PHONY: clean
-clean: clean-camunda clean-kube
+clean: clean-ingress-nginx-camunda clean-kube
 
-include $(helmProfilesDir)/include/camunda.mk
+.PHONY: clean-ingress-nginx-camunda
+clean-ingress-nginx-camunda:
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-azure clean
+# TODO export variables and set flag to override default values
+# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
+
 include ./kubernetes-azure.mk
+# Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets
+#       such as `make port-zeebe`, etc.
+include $(helmProfilesDir)/include/camunda.mk

@@ -47,11 +47,4 @@ use-kube:
 urls:
 	@echo "Cluster: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(subscriptionId)/resourceGroups/$(resourceGroup)/providers/Microsoft.ContainerService/managedClusters/$(clusterName)/overview"
 
-# TODO: move azure ingress related targets into camunda-8-helm-profiles?
-.PHONY: ingress
-ingress: namespace ingress-azure.yaml camunda-values.yaml
-	kubectl apply -f ingress-azure.yaml
 
-.PHONY: clean-ingress
-clean-ingress:
-	kubectl delete ingress ingress-azure -n camunda

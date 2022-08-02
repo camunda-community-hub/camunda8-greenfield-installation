@@ -7,9 +7,6 @@ machineType ?= n1-standard-16
 
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
-# Chart values files
-# TODO: test passing in a list
-chartValues ?= "camunda-values.yaml"
 # Helm release name
 release ?= camunda
 # Helm chart coordinates for Camunda
@@ -18,12 +15,20 @@ chart ?= camunda/camunda-platform
 ipAddress ?= 35.231.29.210
 
 .PHONY: all
-all: kube ingress camunda-values.yaml camunda urls
+all: kube ingress-nginx-camunda urls
+
+.PHONY: ingress-nginx-camunda
+ingress-nginx-camunda:
+	$(MAKE) -C $(helmProfilesDir)/ingress-nginx all
+# TODO export variables and set flag to override default values
 
 # TODO: fix clean-ingress and add back?
 .PHONY: clean
-clean: clean-camunda clean-kube clean-files
+clean: clean-ingress-nginx-camunda clean-kube
 
-include $(helmProfilesDir)/include/ingress-nginx.mk
-include $(helmProfilesDir)/include/camunda.mk
+.PHONY: clean-ingress-nginx-camunda
+clean-ingress-nginx-camunda:
+	$(MAKE) -C $(helmProfilesDir)/ingress-nginx clean
+# TODO export variables and set flag to override default values
+
 include ./kubernetes-gke.mk

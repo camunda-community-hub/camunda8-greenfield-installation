@@ -4,7 +4,7 @@ helmProfilesDir ?= ../../camunda-8-helm-profiles
 namespace ?= camunda
 # Chart values files
 # TODO: test passing in a list
-chartValues ?= "camunda-values-local-dev.yaml"
+chartValues ?= "$(helmProfilesDir)/development/camunda-values.yaml"
 # Helm release name
 release ?= camunda
 # Helm chart coordinates for Camunda

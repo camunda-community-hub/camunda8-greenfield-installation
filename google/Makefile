@@ -14,8 +14,6 @@ release ?= camunda
 # Helm chart coordinates for Camunda
 chart ?= camunda/camunda-platform
 
-ipAddress ?= 35.231.29.210
-
 .PHONY: all
 all: kube ingress-nginx-camunda urls
 

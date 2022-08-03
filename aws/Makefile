@@ -25,8 +25,6 @@ all: cluster.yaml kube oidc-provider ingress-nginx-camunda urls
 ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-nginx
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-ip-from-commandline camunda
-# TODO export variables and set flag to override default values
-# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 .PHONY: clean
 clean: clean-ingress-nginx-camunda clean-kube clean-files
@@ -34,8 +32,6 @@ clean: clean-ingress-nginx-camunda clean-kube clean-files
 .PHONY: clean-ingress-nginx-camunda
 clean-ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx clean
-# TODO export variables and set flag to override default values
-# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 include ./kubernetes-aws.mk
 # Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets

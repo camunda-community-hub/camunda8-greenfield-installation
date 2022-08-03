@@ -56,8 +56,8 @@ The next step is to create a Kubernetes Cluster on the cloud provider of your ch
 
        $ az login
 
-> :information_source: **Tip** If you're using SSO, first, open a browser and sign in to your Azure/Microsoft account.
-> Then try doing the `az login` command again.
+> :information_source: **Tip** If you or your company uses SSO to sign in to Microsoft, first, open a browser and sign in
+> to your Azure/Microsoft account. Then try doing the `az login` command again.
 
 3. Use the Azure-specific `Makefile` to create the cluster
 
@@ -76,10 +76,28 @@ Update the `./azure/Makefile`. Edit the bash variables so that they are appropri
 > more than 10 vCPUS. You may need to go to the Quotas page and request an increase in the vCPU quota for the
 > machine type that you choose.
 
-> :information_source: **Note** The make file will prompt for an IP address of the app gateway after the ingress controller
-> has been created. Eventually we hope to update the scripts to automatically configure the ip address, but for now, it's a manual step
-
 Run `make` to create an Azure Kubernetes cluster and install Camunda.
+
+> :information_source: **Note** The make file will prompt for an IP address once the cluster (and Azure App Gateway) 
+> has been created. To find the ip address, navigate to your Microsoft Azure Console, find the Application Gateway (by 
+> default this will be named `myApplicationGateway`), and click on "Frontend IP configurations". 
+
+## Troubleshooting
+
+The first time you attempt to authenticate to keycloak, you may encounter the following error: 
+
+![Keycloak ssl required](docs/images/keycloak_ssl_required.png?raw=true)
+
+In order to address this issue, we first need temporary access to keycloak. We can accomplish this using Kubernetes 
+port forwarding. Run the following command to temporarily establish port forward from localhost to port 18080. 
+
+     make port-keycloak
+
+Now, you should be able to browse to `http://localhost:18080`. By default, the username is `admin` and password 
+is `camunda`.
+
+Follow the steps described [here](https://docs.camunda.io/docs/self-managed/identity/troubleshooting/common-problems/#solution-2-identity-making-requests-from-an-external-ip-address)
+to fix the issue. 
 
 # Google Compute Engine Prerequisites
 

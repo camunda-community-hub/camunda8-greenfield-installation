@@ -32,8 +32,6 @@ all: kube ingress-nginx-camunda urls
 .PHONY: ingress-nginx-camunda
 ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-azure all
-# TODO export variables and set flag to override default values
-# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 .PHONY: clean
 clean: clean-ingress-nginx-camunda clean-kube
@@ -41,8 +39,6 @@ clean: clean-ingress-nginx-camunda clean-kube
 .PHONY: clean-ingress-nginx-camunda
 clean-ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-azure clean
-# TODO export variables and set flag to override default values
-# Dave's note: I think the -e accomplishes sending variables to sub make, correct?
 
 include ./kubernetes-azure.mk
 # Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets

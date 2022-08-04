@@ -17,6 +17,9 @@ Step 2: Setup command line tools for your cloud provider:
 
 Step 3: Run `make` to create a new kubernetes cluster and install a default Camunda environment.
 
+And when you're finished experimenting, run `make clean` to complete destroy your environment in order to keep hosting 
+costs to a minimum.
+
 # Global Prerequisites
 
 Complete the following steps regardless of which cloud provider you use.  
@@ -38,6 +41,45 @@ Complete the following steps regardless of which cloud provider you use.
        make --version
 
 The next step is to create a Kubernetes Cluster on the cloud provider of your choice.
+
+# A Note about Networking
+
+Kubernetes Networking is, of course, a very complicated topic! There are many ways to configure Ingress and networks
+in Kubernetes environments. And to make things worse, each cloud provider has a slightly different flavor of load 
+balancers and network configuration options.
+
+The purpose of this project is to provide an opinionated strategy for quickly and easily creating a Kubernetes 
+environment running Camunda components. Here's a short summary of how this project configures a simple, prototype network. 
+
+When an ingress controller is installed to Kubernetes, ultimately, it must be available via an IP address. Whether the
+ingress controller is backed by nginx, or a load balancer (or other, more complicated, setups), it has to be available
+over a network via an ip address in order to be useful. 
+
+Currently, ingress rules for Camunda Kubernetes services must be configured using domain name routing. For example: 
+`http://identity.my-domain`. The Camunda components do not currently support url path based routing. 
+For example, urls such as `http://domain/identity` (as of Camunda version 8.0.4) will not work.
+
+So, this means, in order to route network traffic via ingress to Camunda, we need dns names!
+
+But, since this project is meant for quick prototyping, we don't want to go through the hassle of setting up custom domain names. 
+As a solution, we are using [nip.io](https://nip.io) to quickly and easily translate ip addresses into domain names. 
+
+[nip.io](https://nip.io) provides dynamic domain names for any ip address. For example, if your ip address is `1.2.3.4`, 
+a doman name like `my-domain.1.2.3.4.nip.io` will resolve to ip address `1.2.3.4`. It's pretty handy!
+
+So, for example, say our Cloud provider created a Load Balancer listening on ip address `54.210.85.151`. This project 
+uses domain names like this: 
+
+http://identity.54.210.85.151.nip.io
+http://keycloak.54.210.85.151.nip.io
+http://operate.54.210.85.151.nip.io
+http://tasklist.54.210.85.151.nip.io
+
+In other words, if you don't have a domain name yet, don't worry, we have you covered! 
+
+And, even if you do have custom domain name ready, you may find it useful to first use this project to install an 
+environment using the nip.io formatted domain names described above. This way you can experiment and inspect the kubernetes
+components before configuring to use your own custom domain.
 
 # Microsoft Azure Prerequisites
 
@@ -78,9 +120,17 @@ Update the `./azure/Makefile`. Edit the bash variables so that they are appropri
 
 Run `make` to create an Azure Kubernetes cluster and install Camunda.
 
-> :information_source: **Note** The make file will prompt for an IP address once the cluster (and Azure App Gateway) 
-> has been created. To find the ip address, navigate to your Microsoft Azure Console, find the Application Gateway (by 
-> default this will be named `myApplicationGateway`), and click on "Frontend IP configurations". 
+Note that the make file for `azure` will prompt for an IP address after it creates the cluster. Here are some notes on
+how to find the IP Address of the App Gateway of your newly created Azure cluster.
+
+## Azure App Gateway IP Address
+
+By default, the azure kubernetes cluster created by this project will create an Application Gateway named `myApplicationGateway`.
+
+To find the url of the Application Gateway for your cluster, open a browser and navigate to your Azure console. Find the Application 
+Gateway named `myApplicationGateway`, and click on "Frontend IP configurations" and copy the IP address. 
+
+When the make command pauses to ask for IP address, copy and paste this value and press enter to continue the installation. 
 
 ## Troubleshooting
 
@@ -121,13 +171,7 @@ Edit the `./google/Makefile` and set the following bash variables so that they a
     region ?= us-east1-b
     machineType ?= n1-standard-16
 
-** NOTE THIS IS STILL WIP, the ingress will not be configured with correct IP yet, it still has to be done manually **
-
-Run `make` to create a Google Kubernetes cluster and install Camunda. 
-
-4. Run `make use-k8s` to make sure that your local `kubectl` environment is configured to connect to the new cluster.
-
-5. Run `make urls` to see which url to use in order to manage your GKE cluster
+Run `make` to create a Google Kubernetes cluster and install Camunda.
 
 ## Amazon Web Services Prerequisites
 
@@ -163,10 +207,47 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
 > :information_source: **Note** Currently autoscaling for AWS is not working yet. For now, minSize is also used to set 
 > the starting size of the cluster
 
-> :information_source: **Note** The make file will prompt for an IP address of the AWS Load Balancer after the ingress controller
-> has been created. Eventually we hope to update the scripts to automatically configure the ip address, but for now, it's a manual step
-
 5. Run `make` to create a new AKS Cluster and install Camunda
+
+Note that the make file for `aws` will prompt for an IP address after it creates the nginx ingress. Here are some notes on 
+how to find the IP Address of the Load Balancer of your newly created EKS cluster. 
+
+### EKS Load Balancer IP Address
+
+When nginx ingress is installed in an EKS environment, AWS will create a Load Balancer. 
+
+To see details, try running the following command:
+
+```shell
+kubectl get service -n ingress-nginx
+```
+
+You should see output like the following. The EXTERNAL-IP is your load balancer's dns name 
+
+```shell
+NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.100.160.33    ac5770377baff43b7b35f28d725538eb-1410992827.us-east-1.elb.amazonaws.com   80:30114/TCP,443:31088/TCP   13m
+ingress-nginx-controller-admission   ClusterIP      10.100.229.127   <none>                                                                    443/TCP                      13m
+```
+
+Alternatively, navigate to the "EC2 Dashboard" within the AWS console. Look on the left side bar and click on "Load Balancers". 
+You should find the dns name in the "Basic Configration" section of the screen.   
+
+This domain name is associated to multiple ip addresses, one IP address for each Availability Zone. To find the ip 
+addresses used by this domain, try `nslookup` on windows, or `dig` on mac or linux. 
+
+For example, on Windows: 
+```shell
+nslookup ac5770377baff43b7b35f28d725538eb-1410992827.us-east-1.elb.amazonaws.com
+```
+
+Or on Mac/Linux: 
+```shell
+dig +short ac5770377baff43b7b35f28d725538eb-1410992827.us-east-1.elb.amazonaws.com
+```
+
+Choose one of the IP Addresses and copy and paste it into the `make` file prompt to continue the install. 
+
 
 ## Kind (local development environment) Prerequisites 
 
@@ -191,6 +272,26 @@ them running.
 
 Run `make clean` to completely delete all kubernetes objects as well as the cluster.
 
+# Other Useful Commands 
 
+There are several `make` targets that are available no matter what cloud provider you use. Here are a few: 
 
+## Configure your kubectl
 
+Run `make use-kube` to make sure that your local `kubectl` environment is configured to connect to the appropriate cluster. 
+
+## Find urls to management console
+
+Run `make urls` to see which url to use in order to manage your cluster. In google cloud, this will show you the url
+to the GKE console, in aws this will show the EKS cluster, etc. 
+
+Run the following commands to establish port forwarding to your localhost
+
+```shell
+make port-zeebe
+make port-keycloak
+make port-identity
+make port-operate
+make port-tasklist
+make port-optimize
+```

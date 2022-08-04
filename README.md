@@ -173,7 +173,7 @@ Edit the `./google/Makefile` and set the following bash variables so that they a
 
 Run `make` to create a Google Kubernetes cluster and install Camunda.
 
-## Amazon Web Services Prerequisites
+# Amazon Web Services Prerequisites
 
 1. Verify `aws` command line tool is installed (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
@@ -212,7 +212,7 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
 Note that the make file for `aws` will prompt for an IP address after it creates the nginx ingress. Here are some notes on 
 how to find the IP Address of the Load Balancer of your newly created EKS cluster. 
 
-### EKS Load Balancer IP Address
+## EKS Load Balancer IP Address
 
 When nginx ingress is installed in an EKS environment, AWS will create a Load Balancer. 
 
@@ -248,8 +248,7 @@ dig +short ac5770377baff43b7b35f28d725538eb-1410992827.us-east-1.elb.amazonaws.c
 
 Choose one of the IP Addresses and copy and paste it into the `make` file prompt to continue the install. 
 
-
-## Kind (local development environment) Prerequisites 
+# Kind (local development environment) Prerequisites 
 
 It's possible to use `kind` to experiment with kubernetes on your local developer laptop, but please keep in mind that 
 Kubernetes is not really intended to be run on a single machine. That being said, this can be handy for learning and 
@@ -264,6 +263,13 @@ experimenting with Kubernetes.
 
        cd kind
        make
+
+The Kind environment is a stripped down version without ingress and without identity enabled. So, once pods start up, 
+try using port forwarding to access them. 
+
+For example, try `make port-operate`, and then access operate at localhost: http://localhost:8081
+
+Or, try `make port-tasklist`, and then access task list here: http://localhost:8082
 
 # Cleaning Up
 
@@ -285,6 +291,8 @@ Run `make use-kube` to make sure that your local `kubectl` environment is config
 Run `make urls` to see which url to use in order to manage your cluster. In google cloud, this will show you the url
 to the GKE console, in aws this will show the EKS cluster, etc. 
 
+## Port Forwarding
+
 Run the following commands to establish port forwarding to your localhost
 
 ```shell
@@ -295,3 +303,15 @@ make port-operate
 make port-tasklist
 make port-optimize
 ```
+
+## Stop and Uninstall Camunda 
+
+Run the following command to uninstall the Camunda components, but leave the cluster intact.
+
+This can be handy for benchmarking and performance tuning, when you don't want to wait for an entire cluster to be re-created. 
+
+```shell
+make clean-camunda
+```
+
+Later, when you want to install and start camunda again, simply run `make camunda`.

@@ -15,6 +15,8 @@ If you don't care about Kubernetes, you can also
 [skip setup & installation with Camunda Platform 8 SaaS](https://accounts.cloud.camunda.io/signup)
 or [run a Camunda Platform 8 development setup with docker-compose](https://github.com/camunda/camunda-platform#using-docker-compose).
 
+![DMN Decision Table with Installation Options](camunda-8-installation-options.png)
+
 # Installation of Kubernetes and Camunda Platform 8
 
 Create a Camunda 8 self-managed Kubernetes Cluster in 3 Steps:

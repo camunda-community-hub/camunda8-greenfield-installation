@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0duudrz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.3.0-nightly.20220816" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+  <decision id="Decision_0wk4a46" name="How to install Camunda Platform 8 Self-Managed?">
+    <decisionTable id="DecisionTable_1m89yjd" hitPolicy="FIRST" biodi:annotationsWidth="400">
+      <input id="Input_1" label="Do you already have a Kubernetes cluster?" biodi:width="325">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0x0ealh" label="Environment?">
+        <inputExpression id="LiteralExpression_01fio3g" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Installation Method" typeRef="string" biodi:width="225" />
+      <rule id="DecisionRule_0sw9mtw">
+        <inputEntry id="UnaryTests_025bad7">
+          <text>yes</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sajol0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08ix091">
+          <text>Helm Chart using a profile</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07tzsmn">
+        <description>uses EKS, aws CLI and eksctl</description>
+        <inputEntry id="UnaryTests_1a5abeb">
+          <text>no</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16vch4o">
+          <text>AWS</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1m5xkug">
+          <text>Greenfield installation for AWS</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1b8q78v">
+        <description>uses GKE and gcloud CLI</description>
+        <inputEntry id="UnaryTests_0b9honj">
+          <text>no</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e2tbxd">
+          <text>Google</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1by62co">
+          <text>Greenfield installation for Google</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1lg39lf">
+        <description>uses AKS and Azure CLI</description>
+        <inputEntry id="UnaryTests_1juo7rq">
+          <text>no</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16ycny1">
+          <text>Azure</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qywk2g">
+          <text>Greenfield installation for Azure</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0c3albj">
+        <description>uses Docker</description>
+        <inputEntry id="UnaryTests_1alebm0">
+          <text>no</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0llh9vn">
+          <text>My computer</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_123rczr">
+          <text>Greenfield installation for KIND</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1y1if4u">
+        <description>managed by Camunda</description>
+        <inputEntry id="UnaryTests_1e8yidg">
+          <text>I don't care about Kubernetes</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bl98ab">
+          <text>Cloud</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gskes4">
+          <text>Camunda Platform 8 SaaS</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1snf7i0">
+        <description>uses Docker</description>
+        <inputEntry id="UnaryTests_0i9ngv8">
+          <text>I don't care about Kubernetes</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15r9lns">
+          <text>My computer</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1tqf3zz">
+          <text>docker-compose</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0wk4a46">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

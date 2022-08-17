@@ -2,7 +2,20 @@
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 
-# Camunda 8 Greenfield Installation
+# Camunda Platform 8 Greenfield Installation
+
+This repo provides automated scripts to
+set up a Kubernetes cluster for the use with Camunda
+inside your public cloud account or on your local computer.
+An an additional convenience, the scripts can also install Camunda Platform 8
+once the Kubernetes cluster has been created.
+However, if you already have a running Kubernetes cluster at hand, you can skip ahead and
+[directly install Camunda Platform 8 using one of our Helm profiles](https://github.com/camunda-community-hub/zeebe-helm-profiles/).
+If you don't care about Kubernetes, you can also
+[skip setup & installation with Camunda Platform 8 SaaS](https://accounts.cloud.camunda.io/signup)
+or [run a Camunda Platform 8 development setup with docker-compose](https://github.com/camunda/camunda-platform#using-docker-compose).
+
+# Installation of Kubernetes and Camunda Platform 8
 
 Create a Camunda 8 self-managed Kubernetes Cluster in 3 Steps:
 

@@ -298,13 +298,20 @@ Or, try `make port-tasklist`, and then access task list here: http://localhost:8
 
 NOTE: learn more about ingress-kind https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx
 
+## Run Kind with Ingress and full stack
+
+- Run the make command
+
+`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-kind/camunda-values.yaml`
+
+
 ## Modify Kind
 
 - Create a custom camunda-values.yaml in a directory. See camunda-values.yaml listed below for examples.
 - Add your camunda-values.yaml to the chartValues in the command to override existing values
 - Run the make command
 
-`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-kind/camunda-values.yaml`
+`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-kind/camunda-values.yaml,../../my-dir/my-camunda-values.yaml`
 
 # Cleaning Up
 

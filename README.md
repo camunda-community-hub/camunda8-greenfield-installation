@@ -41,7 +41,7 @@ Complete the following steps regardless of which cloud provider you use.
 
 1. Clone this [Camunda 8 Greenfield Installation git repository](https://github.com/camunda-community-hub/camunda8-greenfield-installation)
 
-2. Clone the [Camunda 8 Helm Profiles git repository](https://github.com/falko/camunda-8-helm-profiles).
+2. Clone the [Camunda 8 Helm Profiles git repository](https://github.com/camunda-community-hub/camunda-8-helm-profiles).
 
 At this point, you should have a directory structure similar to the following. It's important that both of these 
 directories exist at the same level: 

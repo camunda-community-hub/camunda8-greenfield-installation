@@ -4,6 +4,11 @@ resourceGroup ?= greenfield-group-01
 clusterName ?= camunda-greenfield-01
 #region ?= eastus2
 region ?= eastus
+# The resource group above is used to contain the Kubernetes Cluster
+# Azure also uses a second "node" resource group that contains nodes and other objects
+# By default, Azure will name this Node Resource Group something like `MC_resourceGroup_clusterName_region`
+# The following allows for specifying the exact name of this second, "Managed Cluster" node resource group
+nodeResourceGroup ?= greenfield-node-group-01
 gatewayName ?= myApplicationGateway
 # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
 # Note that there is a default Quota of 10 vCPUs for each machine type and region

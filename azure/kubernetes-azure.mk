@@ -14,6 +14,7 @@ kube:
 	az group create --name $(resourceGroup) --location $(region)
 	az aks create \
       --resource-group $(resourceGroup) \
+      --node-resource-group $(nodeResourceGroup) \
       --name $(clusterName) \
       --node-vm-size $(machineType) \
       --node-count 1 \

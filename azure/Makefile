@@ -4,6 +4,7 @@ resourceGroup ?= greenfield-group-01
 clusterName ?= camunda-greenfield-01
 #region ?= eastus2
 region ?= eastus
+gatewayName ?= myApplicationGateway
 # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
 # Note that there is a default Quota of 10 vCPUs for each machine type and region
 # You have to request a quota increase. I got the message "This quota cannot be increased at this time." when requesting

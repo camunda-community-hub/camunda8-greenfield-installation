@@ -24,7 +24,7 @@ kube:
       --network-plugin azure \
       --enable-managed-identity \
       -a ingress-appgw \
-      --appgw-name myApplicationGateway \
+      --appgw-name $(gatewayName) \
       --appgw-subnet-cidr "10.225.0.0/16" \
       --generate-ssh-keys
 	kubectl config unset clusters.$(clusterName)

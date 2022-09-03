@@ -1,14 +1,3 @@
-camunda-values.yaml:
-	sed "s/127.0.0.1/$(ipAddress)/g;" camunda-values.tpl.yaml > camunda-values.yaml
-
-ingress-azure.yaml:
-	sed "s/127.0.0.1/$(ipAddress)/g;" ingress-azure.tpl.yaml > ingress-azure.yaml
-
-.PHONY: clean-files
-clean-files:
-	rm -f camunda-values.yaml
-	rm -f ingress-azure.yaml
-
 .PHONY: kube
 kube:
 	az group create --name $(resourceGroup) --location $(region)
@@ -46,6 +35,7 @@ use-kube:
 
 .PHONY: urls
 urls:
+	$(eval subscriptionId := $(shell az account show --query id | xargs))
 	@echo "Cluster: https://portal.azure.com/#@camunda.com/resource/subscriptions/$(subscriptionId)/resourceGroups/$(resourceGroup)/providers/Microsoft.ContainerService/managedClusters/$(clusterName)/overview"
 
 

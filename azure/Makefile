@@ -19,11 +19,6 @@ machineType ?= Standard_A8_v2
 minSize ?= 1
 maxSize ?= 256
 
-chartValues ?= "$(helmProfilesDir)/ingress-azure/camunda-values.yaml"
-
-# TODO: I'd rather not have to call a shell script, but I can't get this to work any other way?
-subscriptionId ?= $(shell "./azure.sh")
-
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
 # Helm release name

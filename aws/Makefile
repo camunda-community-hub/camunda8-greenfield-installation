@@ -4,7 +4,7 @@ clusterName ?= camunda-greenfield
 region ?= us-east-1
 zones ?= ['us-east-1a', 'us-east-1b']
 machineType ?= m5.2xlarge
-# TODO: Currently, auto scaling configuration using these scripts for AWS is not configured
+# TODO: Currently, auto scaling configuration using these scripts for AWS is not working
 # for now, minSize is also used as the starting size of the cluster
 minSize ?= 4
 maxSize ?= 10

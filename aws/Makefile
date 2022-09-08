@@ -10,14 +10,14 @@ minSize ?= 4
 maxSize ?= 10
 
 # This file is created during the make call which runs inside `$(helmProfilesDir)/ingress-aws`
-chartValues ?= "$(helmProfilesDir)/ingress-aws/camunda-values-aws.yaml"
+export chartValues ?= "$(helmProfilesDir)/ingress-aws/camunda-values-aws.yaml"
 
 # Camunda components will be installed into the following Kubernetes namespace
-namespace ?= camunda
+export namespace ?= camunda
 # Helm release name
-release ?= camunda
+export release ?= camunda
 # Helm chart coordinates for Camunda
-chart ?= camunda/camunda-platform
+export chart ?= camunda/camunda-platform
 
 .PHONY: all
 all: cluster.yaml kube oidc-provider ingress-nginx-camunda urls

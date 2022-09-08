@@ -19,6 +19,9 @@ machineType ?= Standard_A8_v2
 minSize ?= 1
 maxSize ?= 256
 
+# This file is created during the make call which runs inside `$(helmProfilesDir)/ingress-azure`
+chartValues ?= "$(helmProfilesDir)/ingress-azure/camunda-values-azure.yaml"
+
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
 # Helm release name

@@ -9,7 +9,8 @@ machineType ?= m5.2xlarge
 minSize ?= 4
 maxSize ?= 10
 
-chartValues ?= "$(helmProfilesDir)/ingress-nginx/camunda-values.yaml"
+# This file is created during the make call which runs inside `$(helmProfilesDir)/ingress-aws`
+chartValues ?= "$(helmProfilesDir)/ingress-aws/camunda-values-aws.yaml"
 
 # Camunda components will be installed into the following Kubernetes namespace
 namespace ?= camunda
@@ -23,15 +24,14 @@ all: cluster.yaml kube oidc-provider ingress-nginx-camunda urls
 
 .PHONY: ingress-nginx-camunda
 ingress-nginx-camunda:
-	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-nginx
-	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx ingress-ip-from-commandline camunda
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-aws all
 
 .PHONY: clean
 clean: clean-ingress-nginx-camunda clean-kube clean-files
 
 .PHONY: clean-ingress-nginx-camunda
 clean-ingress-nginx-camunda:
-	$(MAKE) -e -C $(helmProfilesDir)/ingress-nginx clean
+	$(MAKE) -e -C $(helmProfilesDir)/ingress-aws clean
 
 include ./kubernetes-aws.mk
 # Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets

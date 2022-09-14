@@ -20,20 +20,21 @@ export release ?= camunda
 export chart ?= camunda/camunda-platform
 
 .PHONY: all
-all: cluster.yaml kube oidc-provider ingress-nginx-camunda urls
+all: cluster.yaml kube oidc-provider metrics ingress-nginx-camunda urls
 
 .PHONY: ingress-nginx-camunda
 ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-aws all
 
 .PHONY: clean
-clean: clean-ingress-nginx-camunda clean-kube clean-files
+clean: clean-ingress-nginx-camunda clean-metrics clean-kube clean-files
 
 .PHONY: clean-ingress-nginx-camunda
 clean-ingress-nginx-camunda:
 	$(MAKE) -e -C $(helmProfilesDir)/ingress-aws clean
 
 include ./kubernetes-aws.mk
+include ../metrics/metrics.mk
 # Note: the ingress-nginx makefile already includes this. But if we don't include it here, we can't access targets
 #       such as `make port-zeebe`, etc.
 include $(helmProfilesDir)/include/camunda.mk

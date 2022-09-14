@@ -234,8 +234,18 @@ Edit the `./aws/Makefile` and set the following bash variables so that they are 
 
 5. Run `make` to create a new AKS Cluster and install Camunda
 
-Note that the make file for `aws` will prompt for an IP address after it creates the nginx ingress. Here are some notes on 
-how to find the IP Address of the Load Balancer of your newly created EKS cluster. 
+Note that the make file for `aws` will attempt to automatically find the IP address of the nginx ingress. For more details
+see the section below which describes how to find the IP Address of the Load Balancer of your newly created EKS cluster.
+
+6. Run `kubectl get ingress`. The Values listed in the `HOSTS` column will show the urls that can be used to access your environment
+
+7. By default, Prometheus metrics and a Grafana Dashboard are also installed and configured. You can access this by running the following: 
+
+```shell
+kubectl get service metrics-grafana-loadbalancer --namespace default
+```
+
+Copy the `EXTERNAL-IP` to access the Grafana Dashboard Web UI. The username and password can be found inside `./metrics/grafana-secret.yaml`
 
 ## EKS Load Balancer IP Address
 
@@ -271,7 +281,7 @@ Or on Mac/Linux:
 dig +short ac5770377baff43b7b35f28d725538eb-1410992827.us-east-1.elb.amazonaws.com
 ```
 
-Choose one of the IP Addresses and copy and paste it into the `make` file prompt to continue the install. 
+The first IP Address is used to configure Camunda Ingress Rules. 
 
 # Kind (local development environment) Prerequisites 
 

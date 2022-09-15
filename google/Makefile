@@ -5,14 +5,15 @@ clusterName ?= camunda-greenfield-01
 region ?= us-east1-b
 machineType ?= n1-standard-16
 
-chartValues ?= "$(helmProfilesDir)/ingress-nginx/camunda-values.yaml"
+# This file is created during the make call which runs inside `$(helmProfilesDir)/ingress-nginx`
+export chartValues ?= "$(helmProfilesDir)/ingress-nginx/camunda-values-nginx.yaml"
 
 # Camunda components will be installed into the following Kubernetes namespace
-namespace ?= camunda
+export namespace ?= camunda
 # Helm release name
-release ?= camunda
+export release ?= camunda
 # Helm chart coordinates for Camunda
-chart ?= camunda/camunda-platform
+export chart ?= camunda/camunda-platform
 
 .PHONY: all
 all: kube metrics ingress-nginx-camunda urls

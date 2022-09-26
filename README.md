@@ -316,7 +316,7 @@ NOTE: learn more about ingress-kind https://kind.sigs.k8s.io/docs/user/ingress/#
 
 - Run the make command
 
-`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-kind/camunda-values.yaml`
+`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-niginx/camunda-values.yaml`
 
 
 ## Modify Kind
@@ -325,7 +325,20 @@ NOTE: learn more about ingress-kind https://kind.sigs.k8s.io/docs/user/ingress/#
 - Add your camunda-values.yaml to the chartValues in the command to override existing values
 - Run the make command
 
-`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-kind/camunda-values.yaml,../../my-dir/my-camunda-values.yaml`
+`make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-nginx/camunda-values.yaml,../../my-dir/my-camunda-values.yaml`
+
+
+my-camunda-values.yaml changing the admin password for keycloak
+```
+identity:
+  keycloak:
+    auth:
+      adminUser: admin
+      adminPassword: admin
+      managementUser: manager
+      managementPassword: camunda
+
+```
 
 # Cleaning Up
 

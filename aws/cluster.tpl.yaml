@@ -8,7 +8,7 @@ metadata:
 managedNodeGroups:
   - name: ng-1
     instanceType: <YOUR INSTANCE TYPE>
-    desiredCapacity: 4
+    desiredCapacity: <YOUR MIN SIZE>
     volumeSize: 80
     privateNetworking: true
 

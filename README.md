@@ -318,6 +318,11 @@ NOTE: learn more about ingress-kind https://kind.sigs.k8s.io/docs/user/ingress/#
 
 `make camunda-ingress chartValues=../../camunda-8-helm-profiles/development/camunda-values.yaml,../../camunda-8-helm-profiles/ingress-niginx/camunda-values.yaml`
 
+### Run Kind with zeebe-gateway ingress
+
+#### Test the zeebe-gateway ingress
+
+`zbctl status --host zeebe.127.0.0.1.nip.io --port 443 --certPath signed-server.crt`
 
 ## Modify Kind
 

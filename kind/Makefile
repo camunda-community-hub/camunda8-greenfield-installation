@@ -16,7 +16,7 @@ secret_name ?= tls-secret
 signerName ?= example.com\/pdiddy
 
 .PHONY: all
-all: kube urls
+all: kube camunda urls
 
 .PHONY: camunda-ingress
 camunda-ingress: kube namespace ingress grpc-gateway-tls camunda urls
